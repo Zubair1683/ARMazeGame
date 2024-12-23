@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 public class TimerController : MonoBehaviour
 {
-    public TextMeshProUGUI timerText; // Timer'ı gösterecek Text
-    public static float timeElapsed; // Geçen süre
-    private bool isRunning; // Timer çalışıyor mu?
+    public TextMeshProUGUI timerText; 
+    public static float timeElapsed; 
+    private bool isRunning; 
 
     void Start()
     {
@@ -17,25 +17,25 @@ public class TimerController : MonoBehaviour
     {
         if (isRunning)
         {
-            timeElapsed += Time.deltaTime; // Zamanı artır
+            timeElapsed += Time.deltaTime; 
             timerText.text = "Time: " + timeElapsed.ToString("F2") + "s";
         }
     }
 
     public void StopTimer()
     {
-        isRunning = false; // Timer'ı durdur
+        isRunning = false; 
     }
 
     public void ResetTimer()
     {
-        timeElapsed = 0f; // Zamanı sıfırla
+        timeElapsed = 0f; 
         timerText.text = "Time: 0.00s";
         isRunning = true;
     }
 
     public float GetElapsedTime()
     {
-        return timeElapsed; // Geçen süreyi döndür
+        return timeElapsed; 
     }
 }

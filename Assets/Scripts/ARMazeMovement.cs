@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class ARMazeMovement : MonoBehaviour
 {
-    public GameObject playerCube;         // The player cube
-    public float movementSpeed = 15f;      // Speed of movement
-    private XROrigin xrOrigin;            // Reference to XR Origin
-    private Camera xrCamera;              // XR Camera
-    private GameObject cameraOffset;      // Reference to Camera Offset
+    public GameObject playerCube;         
+    public float movementSpeed = 15f;     
+    private XROrigin xrOrigin;           
+    private Camera xrCamera;             
+    private GameObject cameraOffset;     
     private bool isCollidingWithWall = false;
     private Vector3[] myNum;
     private int i = 0;
-    private Vector3 lastValidPosition; // To store the last valid position
+    private Vector3 lastValidPosition; 
+    private Vector3 initialPosition; 
 
     void Start()
     {
+        initialPosition = playerCube.transform.position;
         InitializeCamera();
     }
 
@@ -27,11 +29,10 @@ public class ARMazeMovement : MonoBehaviour
             InitializeCamera();
             if (xrCamera == null)
             {
-                return; // If camera couldn't be found, stop further processing.
+                return; 
             }
         }
 
-        // Save the current position as the last valid position
         lastValidPosition = xrOrigin.transform.position;
 
         if (i == 0)
@@ -51,21 +52,18 @@ public class ARMazeMovement : MonoBehaviour
         // Normalize the pitch value to the -180 to 180 range (to detect if the camera looks down)
         if (pitch > 180) pitch -= 360;
 
-        // Set a threshold to determine if the camera is facing down
-        float tiltThreshold = 10f; // You can adjust this threshold value
+        float tiltThreshold = 10f; 
         if (pitch > tiltThreshold)  // Looking down condition
         {
-            // Get the horizontal direction (X-Z) of the camera's forward vector
             Vector3 forwardDirection = new Vector3(xrCamera.transform.forward.x, 0, xrCamera.transform.forward.z).normalized;
 
-            // Calculate the next position for the player cube based on camera tilt
             Vector3 nextPosition = playerCube.transform.position + forwardDirection * movementSpeed * Time.deltaTime;
 
             // Check if the predicted position is inside a wall
             if (!IsInsideWall(nextPosition)) // Only move if it's valid
             {
                 playerCube.transform.position = nextPosition;
-                xrOrigin.transform.position = nextPosition; // Keep XR Origin synced
+                xrOrigin.transform.position = nextPosition; 
             }
         }
     }
@@ -86,7 +84,6 @@ public class ARMazeMovement : MonoBehaviour
                 // Get the Camera component from the Camera Offset GameObject
                 xrCamera = cameraOffset.GetComponentInChildren<Camera>();
 
-                // If the camera is still null, log an error
                 if (xrCamera == null)
                 {
                     Debug.LogError("Camera not found in Camera Offset.");
@@ -112,20 +109,14 @@ public class ARMazeMovement : MonoBehaviour
     {
         if (other.CompareTag("camera"))
         {
-            // Handle collision with walls
             isCollidingWithWall = true;
 
             // Reset the position to the last valid position
-            Vector3 beValidPosition = myNum[1];
             xrOrigin.transform.position = myNum[1];
             if (lastValidPosition == myNum[1])
             {
                 xrOrigin.transform.position = myNum[0];
-                beValidPosition = myNum[0];
             }
-
-            // Uncomment the following line if you want to debug position
-            // Debug.Log("Position reset to last valid position: " + beValidPosition);
         }
     }
 
@@ -138,9 +129,14 @@ public class ARMazeMovement : MonoBehaviour
         {
             if (collider.CompareTag("Walls"))
             {
-                return true; // Position is inside a wall
+                return true;
             }
         }
-        return false; // Position is valid
+        return false; 
+    }
+    public void ResetPlayerPosition()
+    {
+        // Reset the player position to the initial position
+        playerCube.transform.position = initialPosition;
     }
 }
