@@ -1,13 +1,6 @@
 # **README: AR Maze Game Project**
 
 
-
-### **Group Members**  
-- Ahmad Zubair Rahimi 21050141006  
-- Ali Şen 20050111066
-- Hidayet Aktürk 20050111030
----
-
 ## **Description**  
 This project is an AR-based maze game built in Unity. The game uses AR features to track player movement and provides an immersive experience. The player navigates the maze, and their performance is tracked using a timer. The game includes start, gameplay, and end scenes with a star-based performance system.
 
